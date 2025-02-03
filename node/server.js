@@ -13,6 +13,7 @@ const VisitorRegistrationRouter = require('./routers/visitorRegistration');
 const VisitorReportRouter = require('./routers/visitorReport')
 const EventsRouter = require('./routers/events')
 const StudentRegistrationRouter = require('./routers/studentRegistration')
+const authRouter = require('./routers/auth')
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -397,10 +398,9 @@ app.use(EmpReportRouter);
 app.use(StdReportRouter);
 app.use(VisitorRegistrationRouter);
 app.use(VisitorReportRouter);
-app.use(EventsRouter)
-app.use(StudentRegistrationRouter
-
-)
+app.use(EventsRouter);
+app.use(StudentRegistrationRouter);
+app.use(authRouter);
 app.set('io', io);
 
 // Start the server
