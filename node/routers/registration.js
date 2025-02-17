@@ -2,7 +2,8 @@ const express = require('express')
 const router = new express.Router()
 const Registration = require('../models/registration')
 const mongoose = require('mongoose');
-const fs = require('fs')
+const fs = require('fs');
+const bcrypt = require('bcryptjs'); 
 const sharp = require('sharp');
 const { GridFsStorage } = require('multer-gridfs-storage');
 const path = require('path')
@@ -39,6 +40,16 @@ router.post('/empRegistration', upload.single('file'), async (req, res) => {
         // Read the file as bytes
         // const fileBytes = req.file.buffer; 
 
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+        // Check if password is provided
+        if (!req.body.password) {
+            return res.status(400).json({ error: 'Password is required' });
+        }
+        if (!req.body.email) {
+            return res.status(400).json({ error: 'email is required' });
+        }
+
         // Create a new file document with the file bytes
         const registration = new Registration({
             empid: req.body.empid,
@@ -47,6 +58,7 @@ router.post('/empRegistration', upload.single('file'), async (req, res) => {
             mobile: req.body.mobile,
             department: req.body.department,
             joiningdate: req.body.joiningdate,
+            password: hashedPassword,
             file: {
               filename: req.file.originalname, 
               data: req.file.buffer

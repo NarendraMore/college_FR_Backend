@@ -9,6 +9,7 @@ const registrationSchema = mongoose.Schema({
     mobile:{ type : String , unique : true, required : true },
     department:String,
     joiningdate:String,
+    password: { type: String, required: true, minlength: 10},
     file: {
         filename: String,
         data: Buffer
